@@ -111,10 +111,10 @@
       "value": "172.16.141.28"
     },
     "templatesBaseUrl": {
-      "value": "https://jsonarmtemplates.blob.core.windows.net/templates"
+      "value": "https://raw.githubusercontent.com/scripts/SQLAlwaysOn/SQLAlwaysOn/Templates"
     },
     "dscExtensionsBaseUrl": {
-      "value": "https://jsonarmtemplates.blob.core.windows.net/dscextensions"
+      "value": "https://raw.githubusercontent.com/scripts/SQLAlwaysOn/SQLAlwaysOn/DscExtensions"
     },
     "autoPatchingDay": {
       "value": "Sunday"
