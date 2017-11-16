@@ -14,9 +14,6 @@
     "sqlLBIPAddress": {
       "type": "string"
     },
-    "mmqLBIPAddress": {
-      "type": "string"
-    },
     "TRZSubnetRef": {
       "type": "string"
     },
@@ -29,33 +26,17 @@
   },
   "variables": {
     "lbSettings": {
-      "arrLBFEName": "[concat('BFE', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBFEName": "[concat('BFE', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBFEName": "[concat('BFE', parameters('deploymentAffix'),'MMQ001')]",
-      "arrLBBEName": "[concat('BBE', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBBEName": "[concat('BBE', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBBEName": "[concat('BBE', parameters('deploymentAffix'),'MMQ001')]",
-      "arrLBName": "[concat('LB', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBName": "[concat('LB', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBName": "[concat('LB', parameters('deploymentAffix'),'MMQ001')]",
       "SQLAOLBProbeName": "[concat('SQLAO', parameters('deploymentAffix'),'LBProbe')]",
-      "mmqLBProbeName": "[concat('MSMQ', parameters('deploymentAffix'),'LBProbe')]"
     },
     "ids": {
-      "arrLBID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbSettings').arrLBName)]",
       "sqlLBID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbSettings').sqlLBName)]",
-      "mmqLBID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbSettings').mmqLBName)]"
     },
     "derivedIds": {
       "sqlLBFEConfigID": "[concat(variables('ids').sqlLBID,'/frontendIPConfigurations/',variables('lbSettings').sqlLBFEName)]",
-      "mmqLBFEConfigID": "[concat(variables('ids').mmqLBID,'/frontendIPConfigurations/',variables('lbSettings').mmqLBFEName)]",
-      "arrLBFEConfigID": "[concat(variables('ids').arrLBID,'/frontendIPConfigurations/',variables('lbSettings').arrLBFEName)]",
-      "arrLBBEAddressPoolID": "[concat(variables('ids').arrLBID,'/backendAddressPools/',variables('lbSettings').arrLBBEName)]",
-      "sqlLBBEAddressPoolID": "[concat(variables('ids').sqlLBID,'/backendAddressPools/',variables('lbSettings').sqlLBBEName)]",
-      "mmqLBBEAddressPoolID": "[concat(variables('ids').mmqLBID,'/backendAddressPools/',variables('lbSettings').mmqLBBEName)]",
-      "arrHTTPNATRuleID": "[concat(variables('ids').arrLBID,'/inboundNatRules/',parameters('HTTPNAT'))]",
       "sqlLBProbeID": "[concat(variables('ids').sqlLBID,'/probes/',variables('lbSettings').SQLAOLBProbeName)]",
-      "mmqLBProbeID": "[concat(variables('ids').mmqLBID,'/probes/',variables('lbSettings').mmqLBProbeName)]"
     }
   },
   "resources": [
@@ -117,21 +98,9 @@
     }
   ],
   "outputs": {
-    "arrLBBEAddressPoolIDResourceId": {
-      "type": "string",
-      "value": "[variables('derivedIds').arrLBBEAddressPoolID]"
-    },
-    "arrHTTPNATRuleIDResourceId": {
-      "type": "string",
-      "value": "[variables('derivedIds').arrHTTPNATRuleID]"
-    },
     "sqlLBBEAddressPoolIDResourceId": {
       "type": "string",
       "value": "[variables('derivedIds').sqlLBBEAddressPoolID]"
-    },
-    "mmqLBBEAddressPoolIDResourceId": {
-      "type": "string",
-      "value": "[variables('derivedIds').mmqLBBEAddressPoolID]"
     },
     "result": {
       "value": "LoadBalancers Provisioning achieved",

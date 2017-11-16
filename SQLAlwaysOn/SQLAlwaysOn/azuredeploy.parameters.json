@@ -47,30 +47,6 @@
     "TRZSubnet": {
       "value": "172.16.141.0/27"
     },
-    "arr1NICIPAddress": {
-      "value": "172.16.140.5"
-    },
-    "arr2NICIPAddress": {
-      "value": "172.16.140.6"
-    },
-    "iis1NICIPAddress": {
-      "value": "172.16.141.5"
-    },
-    "iis2NICIPAddress": {
-      "value": "172.16.141.6"
-    },
-    "mmq1NICIPAddress": {
-      "value": "172.16.141.13"
-    },
-    "mmq2NICIPAddress": {
-      "value": "172.16.141.19"
-    },
-    "app1NICIPAddress": {
-      "value": "172.16.141.20"
-    },
-    "app2NICIPAddress": {
-      "value": "172.16.141.21"
-    },
     "sql1NICIPAddress": {
       "value": "172.16.141.15"
     },
@@ -80,35 +56,14 @@
     "sqlwNICIPAddress": {
       "value": "172.16.141.18"
     },
-    "rsp1NICIPAddress": {
-      "value": "172.16.141.10"
-    },
-    "rsp2NICIPAddress": {
-      "value": "172.16.141.12"
-    },
-    "tsk1NICIPAddress": {
-      "value": "172.16.141.8"
-    },
-    "tsk2NICIPAddress": {
-      "value": "172.16.141.9"
-    },
     "adPDCNICIPAddress": {
       "value": "172.16.141.4"
     },
     "adBDCNICIPAddress": {
       "value": "172.16.141.7"
     },
-    "adm1NICIPAddress": {
-      "value": "172.16.141.11"
-    },
-    "adm2NICIPAddress": {
-      "value": "172.16.141.16"
-    },
     "sqlLBIPAddress": {
       "value": "172.16.141.30"
-    },
-    "mmqLBIPAddress": {
-      "value": "172.16.141.28"
     },
     "templatesBaseUrl": {
       "value": "https://raw.githubusercontent.com/scripts/SQLAlwaysOn/SQLAlwaysOn/Templates"

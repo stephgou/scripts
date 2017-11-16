@@ -23,55 +23,10 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "arrAvailabilitySetRef": {
-      "type": "string"
-    },
-    "iisAvailabilitySetRef": {
-      "type": "string"
-    },
-    "mmqAvailabilitySetRef": {
-      "type": "string"
-    },
-    "appAvailabilitySetRef": {
-      "type": "string"
-    },
-    "sqlAvailabilitySetRef": {
-      "type": "string"
-    },
-    "rspAvailabilitySetRef": {
-      "type": "string"
-    },
-    "tskAvailabilitySetRef": {
-      "type": "string"
-    },
-    "admAvailabilitySetRef": {
-      "type": "string"
-    },
-    "arrVMName": {
-      "type": "string"
-    },
-    "iisVMName": {
-      "type": "string"
-    },
-    "mmqVMName": {
-      "type": "string"
-    },
-    "appVMName": {
-      "type": "string"
-    },
     "sqlVMName": {
       "type": "string"
     },
     "sqlwVMName": {
-      "type": "string"
-    },
-    "rspVMName": {
-      "type": "string"
-    },
-    "tskVMName": {
-      "type": "string"
-    },
-    "admVMName": {
       "type": "string"
     },
     "sqlVMSize": {
@@ -109,18 +64,14 @@
     },
     "sqlImageSKU": {
       "type": "string"
+    },
+    "sqlAvailabilitySetRef": {
+      "type": "string"
     }
   },
   "variables": {
-    "arrStorageName": "[concat(parameters('storageAccountNamePrefix'), 'arr')]",
-    "iisStorageName": "[concat(parameters('storageAccountNamePrefix'), 'iis')]",
-    "mmqStorageName": "[concat(parameters('storageAccountNamePrefix'), 'mmq')]",
-    "appStorageName": "[concat(parameters('storageAccountNamePrefix'), 'app')]",
     "sqlStorageName": "[concat(parameters('storageAccountNamePrefix'), 'sql')]",
     "fwStorageName": "[concat(parameters('storageAccountNamePrefix'), 'fsw')]",
-    "rspStorageName": "[concat(parameters('storageAccountNamePrefix'), 'rsp')]",
-    "tskStorageName": "[concat(parameters('storageAccountNamePrefix'), 'tsk')]",
-    "admStorageName": "[concat(parameters('storageAccountNamePrefix'), 'adm')]",
     "diagStorageName": "[concat(parameters('storageAccountNamePrefix'), 'diag')]"
   },
   "resources": [

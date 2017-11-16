@@ -18,12 +18,13 @@ cls
 $d = get-date
 Write-Host "Starting Deployment $d"
 
-$scriptFoder = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$scriptFolder = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Write-Host "scriptFolder" $scriptFolder
 
 set-location $scriptFolder
+
 #endregion init
-Login-AzureRmAccount -SubscriptionId $subscriptionId
+#Login-AzureRmAccount -SubscriptionId $subscriptionId
 
 # Resource group create
 New-AzureRmResourceGroup `

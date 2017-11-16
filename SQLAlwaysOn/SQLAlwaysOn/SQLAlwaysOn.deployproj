@@ -42,7 +42,6 @@
     <None Include="Templates\DSCConfigPDC.json" />
     <None Include="Templates\DSCConfigSQLAlwaysOnFinalize.json" />
     <None Include="Templates\DSCConfigSQLAlwaysOnPrepare.json" />
-    <None Include="Templates\JoinDomainVMs.json" />
     <None Include="Templates\LoadBalancers.json" />
     <None Include="Templates\NetworkInterfaceBDC.json" />
     <None Include="Templates\NetworkInterfacePDC.json" />

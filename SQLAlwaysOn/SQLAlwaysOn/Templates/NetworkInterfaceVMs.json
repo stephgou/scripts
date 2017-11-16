@@ -8,30 +8,6 @@
         "description": "Schema api version from parent template"
       }
     },
-    "arr1NICIPAddress": {
-      "type": "string"
-    },
-    "arr2NICIPAddress": {
-      "type": "string"
-    },
-    "iis1NICIPAddress": {
-      "type": "string"
-    },
-    "iis2NICIPAddress": {
-      "type": "string"
-    },
-    "mmq1NICIPAddress": {
-      "type": "string"
-    },
-    "mmq2NICIPAddress": {
-      "type": "string"
-    },
-    "app1NICIPAddress": {
-      "type": "string"
-    },
-    "app2NICIPAddress": {
-      "type": "string"
-    },
     "sql1NICIPAddress": {
       "type": "string"
     },
@@ -41,52 +17,10 @@
     "sqlwNICIPAddress": {
       "type": "string"
     },
-    "rsp1NICIPAddress": {
-      "type": "string"
-    },
-    "rsp2NICIPAddress": {
-      "type": "string"
-    },
-    "tsk1NICIPAddress": {
-      "type": "string"
-    },
-    "tsk2NICIPAddress": {
-      "type": "string"
-    },
     "adPDCNICIPAddress": {
       "type": "string"
     },
     "adBDCNICIPAddress": {
-      "type": "string"
-    },
-    "adm1NICIPAddress": {
-      "type": "string"
-    },
-    "adm2NICIPAddress": {
-      "type": "string"
-    },
-    "arr1NicName": {
-      "type": "string"
-    },
-    "arr2NicName": {
-      "type": "string"
-    },
-    "iis1NicName": {
-      "type": "string"
-    },
-    "iis2NicName": {
-      "type": "string"
-    },
-    "mmq1NicName": {
-      "type": "string"
-    },
-    "mmq2NicName": {
-      "type": "string"
-    },
-    "app1NicName": {
-      "type": "string"
-    },
-    "app2NicName": {
       "type": "string"
     },
     "sql1NicName": {
@@ -98,28 +32,10 @@
     "sqlwNicName": {
       "type": "string"
     },
-    "rsp1NicName": {
-      "type": "string"
-    },
-    "rsp2NicName": {
-      "type": "string"
-    },
-    "tsk1NicName": {
-      "type": "string"
-    },
-    "tsk2NicName": {
-      "type": "string"
-    },
     "adPDCNicName": {
       "type": "string"
     },
     "adBDCNicName": {
-      "type": "string"
-    },
-    "adm1NicName": {
-      "type": "string"
-    },
-    "adm2NicName": {
       "type": "string"
     },
     "TRZSubnetRef": {
@@ -128,22 +44,7 @@
     "DMZSubnetRef": {
       "type": "string"
     },
-    "arrBEAddressPoolID": {
-      "type": "string"
-    },
-    "arrHTTPNATRuleID": {
-      "type": "string"
-    },
     "sqlBEAddressPoolID": {
-      "type": "string"
-    },
-    "mmqLBBEAddressPoolID": {
-      "type": "string"
-    },
-    "PIPAdm1AddressName": {
-      "type": "string"
-    },
-    "PIPAdm2AddressName": {
       "type": "string"
     },
     "dnsServers": {

@@ -7,14 +7,14 @@
       "metadata": {
         "description": "Deployment Affix"
       },
-      "value": "stephneo"
+      "value": "stephsqaw"
     },
     "domainName": {
       "type": "string",
       "metadata": {
         "description": "The FQDN of the AD Domain created "
       },
-      "value": "stephneo.com"
+      "value": "stephsqaw.com"
     },
     "adminUsername": {
       "type": "string",
@@ -97,63 +97,7 @@
       },
       "defaultValue": "172.16.141.0/27"
     },
-    "arr1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the ARR 1"
-      },
-      "defaultValue": "172.16.140.5"
-    },
-    "arr2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the ARR 2"
-      },
-      "defaultValue": "172.16.140.6"
-    },
-    "iis1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the IIS 1"
-      },
-      "defaultValue": "172.16.141.5"
-    },
-    "iis2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the IIS 2"
-      },
-      "defaultValue": "172.16.141.6"
-    },
-    "mmq1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the MMQ 1"
-      },
-      "defaultValue": "172.16.141.13"
-    },
-    "mmq2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the MMQ 2"
-      },
-      "defaultValue": "172.16.141.19"
-    },
-    "app1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the APP 1"
-      },
-      "defaultValue": "172.16.141.20"
-    },
-    "app2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the APP 2"
-      },
-      "defaultValue": "172.16.141.21"
-    },
-    "sql1NICIPAddress": {
+     "sql1NICIPAddress": {
       "type": "string",
       "metadata": {
         "description": "The IP address of the SQL 1"
@@ -174,35 +118,7 @@
       },
       "defaultValue": "172.16.141.18"
     },
-    "rsp1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the RSP 1"
-      },
-      "defaultValue": "172.16.141.10"
-    },
-    "rsp2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the RSP 2"
-      },
-      "defaultValue": "172.16.141.12"
-    },
-    "tsk1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the TSK 1"
-      },
-      "defaultValue": "172.16.141.8"
-    },
-    "tsk2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the TSK 2"
-      },
-      "defaultValue": "172.16.141.9"
-    },
-    "adPDCNICIPAddress": {
+     "adPDCNICIPAddress": {
       "type": "string",
       "metadata": {
         "description": "The IP address of the PDC"
@@ -216,33 +132,12 @@
       },
       "defaultValue": "172.16.141.7"
     },
-    "adm1NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the ADM 1"
-      },
-      "defaultValue": "172.16.141.11"
-    },
-    "adm2NICIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the ADM 2"
-      },
-      "defaultValue": "172.16.141.16"
-    },
     "sqlLBIPAddress": {
       "type": "string",
       "metadata": {
         "description": "The IP address of the SQL ILB"
       },
       "defaultValue": "172.16.141.30"
-    },
-    "mmqLBIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The IP address of the MMQ ILB"
-      },
-      "defaultValue": "172.16.141.28"
     },
     "templatesBaseUrl": {
       "type": "string",
@@ -320,15 +215,9 @@
       "createClusterConfigurationFunction": "CreateFailoverCluster.ps1\\CreateFailoverCluster"
     },
     "lbSettings": {
-      "arrLBFE": "[concat('BFE', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBFE": "[concat('BFE', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBFE": "[concat('BFE', parameters('deploymentAffix'),'MMQ001')]",
-      "arrLBBE": "[concat('BBE', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBBE": "[concat('BBE', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBBE": "[concat('BBE', parameters('deploymentAffix'),'MMQ001')]",
-      "arrLBName": "[concat('LB', parameters('deploymentAffix'),'ARR001')]",
       "sqlLBName": "[concat('LB', parameters('deploymentAffix'),'SQL001')]",
-      "mmqLBName": "[concat('LB', parameters('deploymentAffix'),'MMQ001')]"
     },
     "virtualNetworkName": "[concat('VNET', parameters('deploymentAffix'))]",
     "storageAccountNamePrefix": "[concat('sa',toLower(parameters('deploymentAffix')))]",
@@ -363,29 +252,15 @@
     "sqlAOListenerName": "[concat('SQLAO', parameters('deploymentAffix'),'Listener')]",
     "vmSettings": {
       "availabilitySets": {
-        "arrAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'ARR001')]",
-        "iisAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'IIS001')]",
-        "mmqAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'MMQ001')]",
-        "appAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'APP001')]",
         "sqlAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'SQL001')]",
-        "rspAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'RSP001')]",
-        "tskAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'TSK001')]",
         "dcwAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'DCW001')]",
-        "admAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'ADM001')]"
       },
       "noOfSqlVMs": 2,
       "vmContainerName": "vhds",
-      "arrVMName": "[concat('S', parameters('deploymentAffix'),'ARR00')]",
-      "iisVMName": "[concat('S', parameters('deploymentAffix'),'IIS00')]",
-      "mmqVMName": "[concat('S', parameters('deploymentAffix'),'MMQ00')]",
-      "appVMName": "[concat('S', parameters('deploymentAffix'),'APP00')]",
       "sqlVMName": "[concat('S', parameters('deploymentAffix'),'SQL00')]",
       "sqlwVMName": "[concat('S', parameters('deploymentAffix'),'WIT001')]",
-      "rspVMName": "[concat('S', parameters('deploymentAffix'),'RSP00')]",
-      "tskVMName": "[concat('S', parameters('deploymentAffix'),'TSK00')]",
       "adPDCVMName": "[concat('S', parameters('deploymentAffix'),'DCW001')]",
       "adBDCVMName": "[concat('S', parameters('deploymentAffix'),'DCW002')]",
-      "admVMName": "[concat('S', parameters('deploymentAffix'),'ADM00')]",
       "windowsImagePublisher": "MicrosoftWindowsServer",
       "windowsImageOffer": "WindowsServer",
       "windowsImageSKU": "2012-R2-Datacenter",
@@ -398,37 +273,15 @@
     "sqlAOEPName": "[concat('C', parameters('deploymentAffix'),'-hadr')]",
     "sharePath": "[concat('C', parameters('deploymentAffix'),'-fsw')]",
     "clusterName": "[concat('C', parameters('deploymentAffix'),'SQL001')]",
-    "arr1NicName": "[concat(variables('vmSettings').arrVMName,'1-nic')]",
-    "arr2NicName": "[concat(variables('vmSettings').arrVMName,'2-nic')]",
-    "iis1NicName": "[concat(variables('vmSettings').iisVMName,'1-nic')]",
-    "iis2NicName": "[concat(variables('vmSettings').iisVMName,'2-nic')]",
-    "mmq1NicName": "[concat(variables('vmSettings').mmqVMName,'1-nic')]",
-    "mmq2NicName": "[concat(variables('vmSettings').mmqVMName,'2-nic')]",
-    "app1NicName": "[concat(variables('vmSettings').appVMName,'1-nic')]",
-    "app2NicName": "[concat(variables('vmSettings').appVMName,'2-nic')]",
     "sqlwNicName": "[concat(variables('vmSettings').sqlwVMName,'-nic')]",
     "sql1NicName": "[concat(variables('vmSettings').sqlVMName,'1-nic')]",
     "sql2NicName": "[concat(variables('vmSettings').sqlVMName,'2-nic')]",
-    "rsp1NicName": "[concat(variables('vmSettings').rspVMName,'1-nic')]",
-    "rsp2NicName": "[concat(variables('vmSettings').rspVMName,'2-nic')]",
-    "tsk1NicName": "[concat(variables('vmSettings').tskVMName,'1-nic')]",
-    "tsk2NicName": "[concat(variables('vmSettings').tskVMName,'2-nic')]",
     "adPDCNicName": "[concat(variables('vmSettings').adPDCVMName,'-nic')]",
     "adBDCNicName": "[concat(variables('vmSettings').adBDCVMName,'-nic')]",
-    "adm1NicName": "[concat(variables('vmSettings').admVMName,'1-nic')]",
-    "adm2NicName": "[concat(variables('vmSettings').admVMName,'2-nic')]",
     "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "DMZSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('subnetNames').DMZSubnetName)]",
     "TRZSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('subnetNames').TRZSubnetName)]",
-    "ids": {
-      "adm1NicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('adm1NicName'))]",
-      "adm2NicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('adm2NicName'))]"
-    },
     "HTTPNAT": "HTTP",
-    "derivedIds": {
-      "adm1IPConfigID": "[concat(variables('ids').adm1NicId,'/ipConfigurations/ipconfig1')]",
-      "adm2IPConfigID": "[concat(variables('ids').adm2NicId,'/ipConfigurations/ipconfig1')]"
-    },
     "SQL2012SP2-WS2012R2": "Enterprise",
     "SQL2014-WS2012R2": "Enterprise",
     "SQL2014SP1-WS2012R2": "Enterprise",
@@ -449,32 +302,11 @@
           "apiVersion": {
             "value": "2015-06-15"
           },
-          "arrAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.arrAvailabilitySetName]"
-          },
-          "iisAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.iisAvailabilitySetName]"
-          },
-          "mmqAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.mmqAvailabilitySetName]"
-          },
-          "appAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.appAvailabilitySetName]"
-          },
           "sqlAvailabilitySetName": {
             "value": "[variables('vmSettings').availabilitySets.sqlAvailabilitySetName]"
           },
-          "rspAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.rspAvailabilitySetName]"
-          },
-          "tskAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.tskAvailabilitySetName]"
-          },
           "dcwAvailabilitySetName": {
             "value": "[variables('vmSettings').availabilitySets.dcwAvailabilitySetName]"
-          },
-          "admAvailabilitySetName": {
-            "value": "[variables('vmSettings').availabilitySets.admAvailabilitySetName]"
           }
         }
       }
@@ -545,17 +377,8 @@
           "apiVersion": {
             "value": "2015-06-15"
           },
-          "PIPArrAddressName": {
-            "value": "[variables('PIPAddressNames').PIPArrAddressName]"
-          },
           "PIPAdm1AddressName": {
             "value": "[variables('PIPAddressNames').PIPAdm1AddressName]"
-          },
-          "PIPAdm2AddressName": {
-            "value": "[variables('PIPAddressNames').PIPAdm2AddressName]"
-          },
-          "PIPGWAddressName": {
-            "value": "[variables('PIPAddressNames').PIPGWAddressName]"
           }
         }
       }
@@ -584,14 +407,8 @@
           "sqlLBIPAddress": {
             "value": "[parameters('sqlLBIPAddress')]"
           },
-          "mmqLBIPAddress": {
-            "value": "[parameters('mmqLBIPAddress')]"
-          },
           "TRZSubnetRef": {
             "value": "[variables('TRZSubnetRef')]"
-          },
-          "PIPArrAddress": {
-            "value": "[reference('PublicIPs').outputs.PIPArrAddressResourceId.value]"
           },
           "HTTPNAT": {
             "value": "[variables('HTTPNAT')]"
@@ -952,42 +769,6 @@
           "TRZSubnetRef": {
             "value": "[variables('TRZSubnetRef')]"
           },
-          "arrBEAddressPoolID": {
-            "value": "[reference('LoadBalancers').outputs.arrLBBEAddressPoolIDResourceId.value]"
-          },
-          "arrHTTPNATRuleID": {
-            "value": "[reference('LoadBalancers').outputs.arrHTTPNATRuleIDResourceId.value]"
-          },
-          "sqlBEAddressPoolID": {
-            "value": "[reference('LoadBalancers').outputs.sqlLBBEAddressPoolIDResourceId.value]"
-          },
-          "mmqLBBEAddressPoolID": {
-            "value": "[reference('LoadBalancers').outputs.mmqLBBEAddressPoolIDResourceId.value]"
-          },
-          "arr1NICIPAddress": {
-            "value": "[parameters('arr1NICIPAddress')]"
-          },
-          "arr2NICIPAddress": {
-            "value": "[parameters('arr2NICIPAddress')]"
-          },
-          "iis1NICIPAddress": {
-            "value": "[parameters('iis1NICIPAddress')]"
-          },
-          "iis2NICIPAddress": {
-            "value": "[parameters('iis2NICIPAddress')]"
-          },
-          "mmq1NICIPAddress": {
-            "value": "[parameters('mmq1NICIPAddress')]"
-          },
-          "mmq2NICIPAddress": {
-            "value": "[parameters('mmq2NICIPAddress')]"
-          },
-          "app1NICIPAddress": {
-            "value": "[parameters('app1NICIPAddress')]"
-          },
-          "app2NICIPAddress": {
-            "value": "[parameters('app2NICIPAddress')]"
-          },
           "sql1NICIPAddress": {
             "value": "[parameters('sql1NICIPAddress')]"
           },
@@ -997,53 +778,11 @@
           "sqlwNICIPAddress": {
             "value": "[parameters('sqlwNICIPAddress')]"
           },
-          "rsp1NICIPAddress": {
-            "value": "[parameters('rsp1NICIPAddress')]"
-          },
-          "rsp2NICIPAddress": {
-            "value": "[parameters('rsp2NICIPAddress')]"
-          },
-          "tsk1NICIPAddress": {
-            "value": "[parameters('tsk1NICIPAddress')]"
-          },
-          "tsk2NICIPAddress": {
-            "value": "[parameters('tsk2NICIPAddress')]"
-          },
           "adPDCNICIPAddress": {
             "value": "[parameters('adPDCNICIPAddress')]"
           },
           "adBDCNICIPAddress": {
             "value": "[parameters('adBDCNICIPAddress')]"
-          },
-          "adm1NICIPAddress": {
-            "value": "[parameters('adm1NICIPAddress')]"
-          },
-          "adm2NICIPAddress": {
-            "value": "[parameters('adm2NICIPAddress')]"
-          },
-          "arr1NicName": {
-            "value": "[variables('arr1NicName')]"
-          },
-          "arr2NicName": {
-            "value": "[variables('arr2NicName')]"
-          },
-          "iis1NicName": {
-            "value": "[variables('iis1NicName')]"
-          },
-          "iis2NicName": {
-            "value": "[variables('iis2NicName')]"
-          },
-          "mmq1NicName": {
-            "value": "[variables('mmq1NicName')]"
-          },
-          "mmq2NicName": {
-            "value": "[variables('mmq2NicName')]"
-          },
-          "app1NicName": {
-            "value": "[variables('app1NicName')]"
-          },
-          "app2NicName": {
-            "value": "[variables('app2NicName')]"
           },
           "sql1NicName": {
             "value": "[variables('sql1NicName')]"
@@ -1054,35 +793,11 @@
           "sqlwNicName": {
             "value": "[variables('sqlwNicName')]"
           },
-          "rsp1NicName": {
-            "value": "[variables('rsp1NicName')]"
-          },
-          "rsp2NicName": {
-            "value": "[variables('rsp2NicName')]"
-          },
-          "tsk1NicName": {
-            "value": "[variables('tsk1NicName')]"
-          },
-          "tsk2NicName": {
-            "value": "[variables('tsk2NicName')]"
-          },
           "adPDCNicName": {
             "value": "[variables('adPDCNicName')]"
           },
           "adBDCNicName": {
             "value": "[variables('adBDCNicName')]"
-          },
-          "adm1NicName": {
-            "value": "[variables('adm1NicName')]"
-          },
-          "adm2NicName": {
-            "value": "[variables('adm2NicName')]"
-          },
-          "PIPAdm1AddressName": {
-            "value": "[variables('PIPAddressNames').PIPAdm1AddressName]"
-          },
-          "PIPAdm2AddressName": {
-            "value": "[variables('PIPAddressNames').PIPAdm2AddressName]"
           },
           "dnsServers": {
             "value": [
@@ -1131,56 +846,14 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "arrAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.arrAvailabilitySetResourceId.value]"
-          },
-          "iisAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.iisAvailabilitySetResourceId.value]"
-          },
-          "mmqAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.mmqAvailabilitySetResourceId.value]"
-          },
-          "appAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.appAvailabilitySetResourceId.value]"
-          },
           "sqlAvailabilitySetRef": {
             "value": "[reference('AvailabilitySets').outputs.sqlAvailabilitySetResourceId.value]"
-          },
-          "rspAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.rspAvailabilitySetResourceId.value]"
-          },
-          "tskAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.tskAvailabilitySetResourceId.value]"
-          },
-          "admAvailabilitySetRef": {
-            "value": "[reference('AvailabilitySets').outputs.admAvailabilitySetResourceId.value]"
-          },
-          "arrVMName": {
-            "value": "[variables('vmSettings').arrVMName]"
-          },
-          "iisVMName": {
-            "value": "[variables('vmSettings').iisVMName]"
-          },
-          "mmqVMName": {
-            "value": "[variables('vmSettings').mmqVMName]"
-          },
-          "appVMName": {
-            "value": "[variables('vmSettings').appVMName]"
           },
           "sqlVMName": {
             "value": "[variables('vmSettings').sqlVMName]"
           },
           "sqlwVMName": {
             "value": "[variables('vmSettings').sqlwVMName]"
-          },
-          "rspVMName": {
-            "value": "[variables('vmSettings').rspVMName]"
-          },
-          "tskVMName": {
-            "value": "[variables('vmSettings').tskVMName]"
-          },
-          "admVMName": {
-            "value": "[variables('vmSettings').admVMName]"
           },
           "sqlVMSize": {
             "value": "[parameters('sqlVMSize')]"
