@@ -1,0 +1,56 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Schema api version from parent template"
+      }
+    },
+    "storageAccountNamePrefix": {
+      "type": "string"
+    },
+    "commonStorageAccountType": {
+      "type": "string"
+    },
+    "sqlStorageAccountType": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'sql')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "properties": {
+        "accountType": "[parameters('sqlStorageAccountType')]"
+      }
+    },
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'fsw')]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'dcw')]",
+      "properties": {
+        "accountType": "[parameters('commonStorageAccountType')]"
+      }
+    }
+  ],
+  "outputs": {
+    "result": {
+      "value": "Storage Accounts Provisioning achieved",
+      "type": "string"
+    }
+  }
+}

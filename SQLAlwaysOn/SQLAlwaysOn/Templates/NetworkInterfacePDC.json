@@ -1,0 +1,49 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Schema api version from parent template"
+      }
+    },
+    "adPDCNICIPAddress": {
+      "type": "string"
+    },
+    "adPDCNicName": {
+      "type": "string"
+    },
+    "TRZSubnetRef": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('adPDCNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('adPDCNICIPAddress')]",
+              "subnet": {
+                "id": "[parameters('TRZSubnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "result": {
+      "value": "NetworkInterface PDC Provisioning achieved",
+      "type": "string"
+    }
+  }
+}

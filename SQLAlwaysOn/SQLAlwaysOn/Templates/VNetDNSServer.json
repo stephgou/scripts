@@ -1,0 +1,62 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Schema api version from parent template"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Virtual Network"
+      }
+    },
+    "virtualNetworkAddressRange": {
+      "type": "string",
+      "metadata": {
+        "description": "The address range of the VNET in CIDR format"
+      },
+      "defaultValue": "10.0.0.0/16"
+    },
+    "subnets": {
+      "type": "array",
+      "metadata": {
+        "description": "The subnet definition for the VNET"
+      }
+    },
+    "dnsServerAddress": {
+      "type": "array",
+      "metadata": {
+        "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
+      }
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('virtualNetworkName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('virtualNetworkAddressRange')]"
+          ]
+        },
+        "dhcpOptions": {
+          "dnsServers": "[parameters('DNSServerAddress')]"
+        },
+        "subnets": "[parameters('subnets')]"
+      }
+    }
+  ],
+  "outputs": {
+    "result": {
+      "value": "VNET DNS configuration achieved",
+      "type": "string"
+    }
+  }
+}

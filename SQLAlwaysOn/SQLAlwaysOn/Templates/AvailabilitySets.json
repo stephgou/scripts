@@ -1,0 +1,103 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Schema api version from parent template"
+      }
+    },
+    "arrAvailabilitySetName": {
+      "type": "string"
+    },
+    "iisAvailabilitySetName": {
+      "type": "string"
+    },
+    "mmqAvailabilitySetName": {
+      "type": "string"
+    },
+    "appAvailabilitySetName": {
+      "type": "string"
+    },
+    "sqlAvailabilitySetName": {
+      "type": "string"
+    },
+    "rspAvailabilitySetName": {
+      "type": "string"
+    },
+    "tskAvailabilitySetName": {
+      "type": "string"
+    },
+    "dcwAvailabilitySetName": {
+      "type": "string"
+    },
+    "admAvailabilitySetName": {
+      "type": "string"
+    },
+  },
+  "variables": {
+    "faultDomainCount": "3",
+    "updateDomainCount": "10"
+  },
+  "resources": [
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[parameters('sqlAvailabilitySetName')]",
+      "properties": {
+        "PlatformFaultDomainCount": "[variables('faultDomainCount')]",
+        "PlatformUpdateDomainCount": "[variables('updateDomainCount')]"
+      }
+    },
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[parameters('dcwAvailabilitySetName')]"
+    }
+  ],
+  "outputs": {
+    "arrAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('arrAvailabilitySetName'))]"
+    },
+    "iisAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('iisAvailabilitySetName'))]"
+    },
+    "mmqAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('mmqAvailabilitySetName'))]"
+    },
+    "appAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('appAvailabilitySetName'))]"
+    },
+    "sqlAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('sqlAvailabilitySetName'))]"
+    },
+    "rspAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('rspAvailabilitySetName'))]"
+    },
+    "tskAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('tskAvailabilitySetName'))]"
+    },
+    "adAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('dcwAvailabilitySetName'))]"
+    },
+    "admAvailabilitySetResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('admAvailabilitySetName'))]"
+    },
+    "result": {
+      "value": "AvailabilitySets Provisioning achieved",
+      "type": "string"
+    }
+  }
+}

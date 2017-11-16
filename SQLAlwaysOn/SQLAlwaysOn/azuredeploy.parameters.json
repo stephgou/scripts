@@ -1,0 +1,135 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "deploymentAffix": {
+      "value": "stephneo"
+    },
+    "domainName": {
+      "value": "stephneo.com"
+    },
+    "adminUsername": {
+      "value": "stephgou"
+    },
+    "adminPassword": {
+      "value": "*Hackademy007"
+    },
+    "adVMSize": {
+      "value": "Standard_A2"
+    },
+    "sqlVMSize": {
+      "value": "Standard_DS1"
+    },
+    "witnessVMSize": {
+      "value": "Standard_A1"
+    },
+    "commonVMSize": {
+      "value": "Standard_A2"
+    },
+    "sqlServerServiceAccountUserName": {
+      "value": "stephgou"
+    },
+    "sqlServerServiceAccountPassword": {
+      "value": "Hackademy007"
+    },
+    "sqlStorageAccountType": {
+      "value": "Premium_LRS"
+    },
+    "commonStorageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "virtualNetworkAddressRange": {
+      "value": "172.16.140.0/22"
+    },
+    "DMZSubnet": {
+      "value": "172.16.140.0/27"
+    },
+    "TRZSubnet": {
+      "value": "172.16.141.0/27"
+    },
+    "arr1NICIPAddress": {
+      "value": "172.16.140.5"
+    },
+    "arr2NICIPAddress": {
+      "value": "172.16.140.6"
+    },
+    "iis1NICIPAddress": {
+      "value": "172.16.141.5"
+    },
+    "iis2NICIPAddress": {
+      "value": "172.16.141.6"
+    },
+    "mmq1NICIPAddress": {
+      "value": "172.16.141.13"
+    },
+    "mmq2NICIPAddress": {
+      "value": "172.16.141.19"
+    },
+    "app1NICIPAddress": {
+      "value": "172.16.141.20"
+    },
+    "app2NICIPAddress": {
+      "value": "172.16.141.21"
+    },
+    "sql1NICIPAddress": {
+      "value": "172.16.141.15"
+    },
+    "sql2NICIPAddress": {
+      "value": "172.16.141.17"
+    },
+    "sqlwNICIPAddress": {
+      "value": "172.16.141.18"
+    },
+    "rsp1NICIPAddress": {
+      "value": "172.16.141.10"
+    },
+    "rsp2NICIPAddress": {
+      "value": "172.16.141.12"
+    },
+    "tsk1NICIPAddress": {
+      "value": "172.16.141.8"
+    },
+    "tsk2NICIPAddress": {
+      "value": "172.16.141.9"
+    },
+    "adPDCNICIPAddress": {
+      "value": "172.16.141.4"
+    },
+    "adBDCNICIPAddress": {
+      "value": "172.16.141.7"
+    },
+    "adm1NICIPAddress": {
+      "value": "172.16.141.11"
+    },
+    "adm2NICIPAddress": {
+      "value": "172.16.141.16"
+    },
+    "sqlLBIPAddress": {
+      "value": "172.16.141.30"
+    },
+    "mmqLBIPAddress": {
+      "value": "172.16.141.28"
+    },
+    "templatesBaseUrl": {
+      "value": "https://jsonarmtemplates.blob.core.windows.net/templates"
+    },
+    "dscExtensionsBaseUrl": {
+      "value": "https://jsonarmtemplates.blob.core.windows.net/dscextensions"
+    },
+    "autoPatchingDay": {
+      "value": "Sunday"
+    },
+    "autoPatchingStartHour": {
+      "value": "2"
+    },
+    "sqlServerVersion": {
+      "value": "SQL2014SP1-WS2012R2"
+    },
+    "numberOfSqlVMDisks": {
+      "value": "1"
+    },
+    "workloadType": {
+      "value": "GENERAL"
+    }
+  }
+}

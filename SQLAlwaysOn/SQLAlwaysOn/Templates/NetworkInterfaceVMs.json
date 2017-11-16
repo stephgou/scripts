@@ -1,0 +1,243 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Schema api version from parent template"
+      }
+    },
+    "arr1NICIPAddress": {
+      "type": "string"
+    },
+    "arr2NICIPAddress": {
+      "type": "string"
+    },
+    "iis1NICIPAddress": {
+      "type": "string"
+    },
+    "iis2NICIPAddress": {
+      "type": "string"
+    },
+    "mmq1NICIPAddress": {
+      "type": "string"
+    },
+    "mmq2NICIPAddress": {
+      "type": "string"
+    },
+    "app1NICIPAddress": {
+      "type": "string"
+    },
+    "app2NICIPAddress": {
+      "type": "string"
+    },
+    "sql1NICIPAddress": {
+      "type": "string"
+    },
+    "sql2NICIPAddress": {
+      "type": "string"
+    },
+    "sqlwNICIPAddress": {
+      "type": "string"
+    },
+    "rsp1NICIPAddress": {
+      "type": "string"
+    },
+    "rsp2NICIPAddress": {
+      "type": "string"
+    },
+    "tsk1NICIPAddress": {
+      "type": "string"
+    },
+    "tsk2NICIPAddress": {
+      "type": "string"
+    },
+    "adPDCNICIPAddress": {
+      "type": "string"
+    },
+    "adBDCNICIPAddress": {
+      "type": "string"
+    },
+    "adm1NICIPAddress": {
+      "type": "string"
+    },
+    "adm2NICIPAddress": {
+      "type": "string"
+    },
+    "arr1NicName": {
+      "type": "string"
+    },
+    "arr2NicName": {
+      "type": "string"
+    },
+    "iis1NicName": {
+      "type": "string"
+    },
+    "iis2NicName": {
+      "type": "string"
+    },
+    "mmq1NicName": {
+      "type": "string"
+    },
+    "mmq2NicName": {
+      "type": "string"
+    },
+    "app1NicName": {
+      "type": "string"
+    },
+    "app2NicName": {
+      "type": "string"
+    },
+    "sql1NicName": {
+      "type": "string"
+    },
+    "sql2NicName": {
+      "type": "string"
+    },
+    "sqlwNicName": {
+      "type": "string"
+    },
+    "rsp1NicName": {
+      "type": "string"
+    },
+    "rsp2NicName": {
+      "type": "string"
+    },
+    "tsk1NicName": {
+      "type": "string"
+    },
+    "tsk2NicName": {
+      "type": "string"
+    },
+    "adPDCNicName": {
+      "type": "string"
+    },
+    "adBDCNicName": {
+      "type": "string"
+    },
+    "adm1NicName": {
+      "type": "string"
+    },
+    "adm2NicName": {
+      "type": "string"
+    },
+    "TRZSubnetRef": {
+      "type": "string"
+    },
+    "DMZSubnetRef": {
+      "type": "string"
+    },
+    "arrBEAddressPoolID": {
+      "type": "string"
+    },
+    "arrHTTPNATRuleID": {
+      "type": "string"
+    },
+    "sqlBEAddressPoolID": {
+      "type": "string"
+    },
+    "mmqLBBEAddressPoolID": {
+      "type": "string"
+    },
+    "PIPAdm1AddressName": {
+      "type": "string"
+    },
+    "PIPAdm2AddressName": {
+      "type": "string"
+    },
+    "dnsServers": {
+      "type": "array",
+      "metadata": {
+        "Description": "DNS Servers configured on the NIC"
+      }
+    }
+  },
+  "resources": [
+    {
+      "name": "[parameters('sql1NicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('sql1NICIPAddress')]",
+              "subnet": {
+                "id": "[parameters('TRZSubnetRef')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[parameters('sqlBEAddressPoolID')]"
+                }
+              ]
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": "[parameters('dnsServers')]"
+        }
+      }
+    },
+    {
+      "name": "[parameters('sql2NicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('sql2NICIPAddress')]",
+              "subnet": {
+                "id": "[parameters('TRZSubnetRef')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[parameters('sqlBEAddressPoolID')]"
+                }
+              ]
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": "[parameters('dnsServers')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('sqlwNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('sqlwNICIPAddress')]",
+              "subnet": {
+                "id": "[parameters('TRZSubnetRef')]"
+              }
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": "[parameters('dnsServers')]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "result": {
+      "value": "NetworkInterfaces Provisioning achieved",
+      "type": "string"
+    }
+  }
+}

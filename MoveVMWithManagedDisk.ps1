@@ -19,13 +19,13 @@ $vmSize = "Standard_A2"
 Login-AzureRmAccount
 Select-AzureRmSubscription -SubscriptionId $subscriptionIdA
 
-#Step 0: Stop VM, Generalize and get access to OS Managed Disk’s underlying blob URL: #
+#Step 0: Stop VM, Generalize and get access to OS Managed Disks underlying blob URL: #
 Stop-AzureRmVM -ResourceGroupName $resourceGroupName -Name $vmName -Force 
 Set-AzureRmVm -ResourceGroupName $resourceGroupName -Name $vmName -Generalized
 
 #Step 1: Copy the Managed Disk (as VHD file) to a storage account in the same subscription
 $sas = Grant-AzureRmDiskAccess -ResourceGroupName $resourceGroupName -DiskName $osDiskName -DurationInSecond 3600 -Access Read 
-$destContext = New-AzureStorageContext –StorageAccountName $storageAccountB -StorageAccountKey $storageAccountBKey 
+$destContext = New-AzureStorageContext -StorageAccountName $storageAccountB -StorageAccountKey $storageAccountBKey 
 Start-AzureStorageBlobCopy -AbsoluteUri $sas.AccessSAS -DestContainer 'vhds' -DestContext $destContext -DestBlob "$osDiskName.vhd"
 
 #Step 2: Create Managed Disk using the VHD file in another subscription

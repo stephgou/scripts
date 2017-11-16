@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>16340e4d-47c6-4448-b63b-db2a7a245d08</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <Content Include="azuredeploy.json" />
+    <Content Include="azuredeploy.parameters.json" />
+    <None Include="DeployAlwaysOn.ps1" />
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <None Include="DscExtensions\CreateADBDC.ps1.zip" />
+    <None Include="DscExtensions\CreateADPDC.ps1.zip" />
+    <None Include="DscExtensions\CreateFailoverCluster.ps1.zip" />
+    <None Include="DscExtensions\CreateFileShareWitness.ps1.zip" />
+    <None Include="DscExtensions\PrepareAlwaysOnSqlServer.ps1.zip" />
+    <None Include="Templates\AvailabilitySets.json" />
+    <None Include="Templates\DSCConfigBDC.json" />
+    <None Include="Templates\DSCConfigPDC.json" />
+    <None Include="Templates\DSCConfigSQLAlwaysOnFinalize.json" />
+    <None Include="Templates\DSCConfigSQLAlwaysOnPrepare.json" />
+    <None Include="Templates\JoinDomainVMs.json" />
+    <None Include="Templates\LoadBalancers.json" />
+    <None Include="Templates\NetworkInterfaceBDC.json" />
+    <None Include="Templates\NetworkInterfacePDC.json" />
+    <None Include="Templates\NetworkInterfaceVMs.json" />
+    <None Include="Templates\PublicIPs.json" />
+    <None Include="Templates\StorageAccounts.json" />
+    <None Include="Templates\VirtualMachineDC.json" />
+    <None Include="Templates\VirtualMachineVMs.json" />
+    <None Include="Templates\VirtualNetwork.json" />
+    <None Include="Templates\VNetDNSServer.json" />
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>
