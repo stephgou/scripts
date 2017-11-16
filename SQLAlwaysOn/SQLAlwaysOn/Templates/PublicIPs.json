@@ -14,10 +14,21 @@
   },
   "variables": {
     "PIPAddressType": "Dynamic",
-    "gwDomainNameLabel": "[toLower(parameters('rdpIPAddressName'))]"
+    "rdpDomainNameLabel": "[toLower(parameters('rdpIPAddressName'))]"
   },
   "resources": [
-    
+    {
+      "apiVersion": "[parameters('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[parameters('rdpIPAddressName')]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('PIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('rdpDomainNameLabel')]"
+        }
+      }
+    }
   ],
   "outputs": {
     "PIPArrAddressResourceId": {
@@ -29,4 +40,4 @@
       "type": "string"
     }
   }
- }
+}
