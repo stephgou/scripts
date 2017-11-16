@@ -66,10 +66,10 @@
       "value": "172.16.141.30"
     },
     "templatesBaseUrl": {
-      "value": "https://raw.githubusercontent.com/scripts/SQLAlwaysOn/SQLAlwaysOn/Templates"
+      "value": "https://raw.githubusercontent.com/stephgou/scripts/master/SQLAlwaysOn/SQLAlwaysOn/Templates"
     },
     "dscExtensionsBaseUrl": {
-      "value": "https://raw.githubusercontent.com/scripts/SQLAlwaysOn/SQLAlwaysOn/DscExtensions"
+      "value": "https://raw.githubusercontent.com/stephgou/scripts/master/SQLAlwaysOn/SQLAlwaysOn/DscExtensions"
     },
     "autoPatchingDay": {
       "value": "Sunday"

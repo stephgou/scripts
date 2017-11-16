@@ -8,25 +8,13 @@
         "description": "Schema api version from parent template"
       }
     },
-    "PIPArrAddressName": {
-      "type": "string"
-    },
-    "PIPAdm1AddressName": {
-      "type": "string"
-    },
-    "PIPAdm2AddressName": {
-      "type": "string"
-    },
-    "PIPGWAddressName": {
+    "rdpIPAddressName": {
       "type": "string"
     }
   },
   "variables": {
     "PIPAddressType": "Dynamic",
-    "arrDomainNameLabel": "[toLower(parameters('PIPArrAddressName'))]",
-    "adm1DomainNameLabel": "[toLower(parameters('PIPAdm1AddressName'))]",
-    "adm2DomainNameLabel": "[toLower(parameters('PIPAdm2AddressName'))]",
-    "gwDomainNameLabel": "[toLower(parameters('PIPGWAddressName'))]"
+    "gwDomainNameLabel": "[toLower(parameters('rdpIPAddressName'))]"
   },
   "resources": [
     
@@ -34,19 +22,7 @@
   "outputs": {
     "PIPArrAddressResourceId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPArrAddressName'))]"
-    },
-    "PIPAdm1AddressResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPAdm1AddressName'))]"
-    },
-    "PIPAdm2AddressResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPAdm2AddressName'))]"
-    },
-    "PIPGWAddressResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPGWAddressName'))]"
+      "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('rdpIPAddressName'))]"
     },
     "result": {
       "value": "Public IPs Provisioning achieved",
