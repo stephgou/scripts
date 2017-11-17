@@ -25,6 +25,9 @@
       "location": "[resourceGroup().location]",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('sqlAvailabilitySetName')]",
+      "sku": {
+        "name": "Aligned"
+      },
       "properties": {
         "PlatformFaultDomainCount": "[variables('faultDomainCount')]",
         "PlatformUpdateDomainCount": "[variables('updateDomainCount')]"
@@ -34,7 +37,10 @@
       "apiVersion": "[parameters('apiVersion')]",
       "location": "[resourceGroup().location]",
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[parameters('dcwAvailabilitySetName')]"
+      "name": "[parameters('dcwAvailabilitySetName')]",
+      "sku": {
+        "name": "Aligned"
+      }
     }
   ],
   "outputs": {
