@@ -278,13 +278,17 @@
     "SQL2012SP2-WS2012R2": "Enterprise",
     "SQL2014-WS2012R2": "Enterprise",
     "SQL2014SP1-WS2012R2": "Enterprise",
-    "SQL2016CTP3-WS2012R2": "Evaluation"
+    "SQL2016CTP3-WS2012R2": "Evaluation",
+    "storageApiVersion": "2015-06-15",
+    "nestedVirtualMachineApiVersion": "2016-09-01",
+    "networkApiVersion": "2017-03-01",
+    "computeApiVersion": "2017-03-30"
   },
   "resources": [
     {
       "name": "AvailabilitySets",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -293,7 +297,7 @@
         },
         "parameters": {
           "apiVersion": {
-            "value": "2015-06-15"
+            "value": "[variables('computeApiVersion')]"
           },
           "sqlAvailabilitySetName": {
             "value": "[variables('vmSettings').availabilitySets.sqlAvailabilitySetName]"
@@ -307,7 +311,7 @@
     {
       "name": "StorageAccounts",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -333,7 +337,7 @@
     {
       "name": "VirtualNetwork",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -359,7 +363,7 @@
     {
       "name": "PublicIPs",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -379,7 +383,7 @@
     {
       "name": "LoadBalancers",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "dependsOn": [
         "Microsoft.Resources/deployments/VirtualNetwork",
         "Microsoft.Resources/deployments/PublicIPs"
@@ -412,7 +416,7 @@
     {
       "name": "NetworkInterfacePDC",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "dependsOn": [
         "Microsoft.Resources/deployments/VirtualNetwork"
       ],
@@ -441,7 +445,7 @@
     {
       "name": "VirtualMachinePDC",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "dependsOn": [
         "Microsoft.Resources/deployments/AvailabilitySets",
         "Microsoft.Resources/deployments/StorageAccounts",
@@ -456,7 +460,7 @@
         },
         "parameters": {
           "apiVersion": {
-            "value": "2015-06-15"
+            "value": "[variables('computeApiVersion')]"
           },
           "location": {
             "value": "[resourceGroup().location]"

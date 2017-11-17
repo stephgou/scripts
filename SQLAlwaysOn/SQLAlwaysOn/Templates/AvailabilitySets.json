@@ -40,6 +40,10 @@
       "name": "[parameters('dcwAvailabilitySetName')]",
       "sku": {
         "name": "Aligned"
+      },
+      "properties": {
+        "PlatformFaultDomainCount": "[variables('faultDomainCount')]",
+        "PlatformUpdateDomainCount": "[variables('updateDomainCount')]"
       }
     }
   ],
