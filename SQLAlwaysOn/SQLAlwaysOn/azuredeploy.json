@@ -438,6 +438,9 @@
           },
           "TRZSubnetRef": {
             "value": "[variables('TRZSubnetRef')]"
+          },
+          "rdpIPAddressName": {
+            "value": "[variables('rdpIPAddressName')]"
           }
         }
       }
@@ -494,6 +497,78 @@
           },
           "adImageSKU": {
             "value": "[variables('vmSettings').windowsImageSKU]"
+          }
+        }
+      }
+    },
+    {
+      "name": "DSCConfigPDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/VirtualMachinePDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').DSCConfigPDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "adPDCVMName": {
+            "value": "[variables('vmSettings').adPDCVMName]"
+          },
+          "adminUserName": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adPDCConfigurationFunction": {
+            "value": "[variables('configuration').adPDCConfigurationFunction]"
+          },
+          "adPDCModulesURL": {
+            "value": "[variables('configuration').adPDCModulesURL]"
+          }
+        }
+      }
+    },
+    {
+      "name": "VNetDNSServerWithPDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/DSCConfigPDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').VNetDNSServerTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[parameters('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [
+              "[parameters('adPDCNICIPAddress')]"
+            ]
           }
         }
       }

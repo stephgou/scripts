@@ -16,34 +16,44 @@
     },
     "TRZSubnetRef": {
       "type": "string"
+    },
+    "rdpIPAddressName": {
+      "type": "string",
+      "metadata": { "description": "PIP ADFS Address Name prefix" }
     }
   },
+  "variables": {
+    "rdpSuffix": "-rdp"
+  },
   "resources": [
-    {
-      "apiVersion": "[parameters('apiVersion')]",
-      "location": "[resourceGroup().location]",
-      "name": "[parameters('adPDCNicName')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('adPDCNICIPAddress')]",
-              "subnet": {
-                "id": "[parameters('TRZSubnetRef')]"
+      {
+        "apiVersion": "[parameters('apiVersion')]",
+        "location": "[resourceGroup().location]",
+        "name": "[parameters('adPDCNicName')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[parameters('adPDCNICIPAddress')]",
+                "subnet": {
+                  "id": "[parameters('TRZSubnetRef')]"
+                },
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('rdpIPAddressName'), '0', variables('rdpSuffix')))]"
+                }
               }
             }
-          }
-        ]
+          ]
+        }
+      }
+    ],
+    "outputs": {
+      "result": {
+        "value": "NetworkInterface PDC Provisioning achieved",
+        "type": "string"
       }
     }
-  ],
-  "outputs": {
-    "result": {
-      "value": "NetworkInterface PDC Provisioning achieved",
-      "type": "string"
-    }
   }
-}
