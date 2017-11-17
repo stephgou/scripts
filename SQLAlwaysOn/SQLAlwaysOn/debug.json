@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "deploymentAffix": {
+    "deploymentPrefix": {
       "type": "string",
       "metadata": {
         "description": "Deployment Affix"
@@ -213,16 +213,16 @@
       "createClusterConfigurationFunction": "CreateFailoverCluster.ps1\\CreateFailoverCluster"
     },
     "lbSettings": {
-      "sqlLBFE": "[concat('BFE', parameters('deploymentAffix'),'SQL001')]",
-      "sqlLBBE": "[concat('BBE', parameters('deploymentAffix'),'SQL001')]",
-      "sqlLBName": "[concat('LB', parameters('deploymentAffix'),'SQL001')]"
+      "sqlLBFE": "[concat('BFE', parameters('deploymentPrefix'),'SQL001')]",
+      "sqlLBBE": "[concat('BBE', parameters('deploymentPrefix'),'SQL001')]",
+      "sqlLBName": "[concat('LB', parameters('deploymentPrefix'),'SQL001')]"
     },
-    "virtualNetworkName": "[concat('VNET', parameters('deploymentAffix'))]",
-    "storageAccountNamePrefix": "[concat('sa',toLower(parameters('deploymentAffix')))]",
-    "storageNamePrefix": "[variables('storageAccountNamePrefix')]",
+    "virtualNetworkName": "[concat('VNET', parameters('deploymentPrefix'))]",
+    "storageAccountNamePrefix": "[concat('sa',toLower(parameters('deploymentPrefix')))]",
+    "storageAccountNamePrefix": "[variables('storageAccountNamePrefix')]",
     "subnetNames": {
-      "TRZSubnetName": "[concat('TRZ', parameters('deploymentAffix'),'Subnet')]",
-      "DMZSubnetName": "[concat('DMZ', parameters('deploymentAffix'),'Subnet')]"
+      "TRZSubnetName": "[concat('TRZ', parameters('deploymentPrefix'),'Subnet')]",
+      "DMZSubnetName": "[concat('DMZ', parameters('deploymentPrefix'),'Subnet')]"
     },
     "subnets": [
       {
@@ -239,26 +239,26 @@
       }
     ],
     "PIPAddressNames": {
-      "PIPArrAddressName": "[concat('PIP', parameters('deploymentAffix'),'ARR001')]",
-      "PIPAdm1AddressName": "[concat('PIP', parameters('deploymentAffix'),'ADM001')]",
-      "PIPAdm2AddressName": "[concat('PIP', parameters('deploymentAffix'),'ADM002')]",
-      "PIPGWAddressName": "[concat('PIP', parameters('deploymentAffix'),'GW001')]"
+      "PIPArrAddressName": "[concat('PIP', parameters('deploymentPrefix'),'ARR001')]",
+      "PIPAdm1AddressName": "[concat('PIP', parameters('deploymentPrefix'),'ADM001')]",
+      "PIPAdm2AddressName": "[concat('PIP', parameters('deploymentPrefix'),'ADM002')]",
+      "PIPGWAddressName": "[concat('PIP', parameters('deploymentPrefix'),'GW001')]"
     },
-    "sqlAOLBName": "[concat('LB', parameters('deploymentAffix'),'SQL001')]",
-    "sqlAOAGName": "[concat('SQLAO', parameters('deploymentAffix'),'AG')]",
+    "sqlAOLBName": "[concat('LB', parameters('deploymentPrefix'),'SQL001')]",
+    "sqlAOAGName": "[concat('SQLAO', parameters('deploymentPrefix'),'AG')]",
     "sqlAOListenerPort": "1433",
-    "sqlAOListenerName": "[concat('SQLAO', parameters('deploymentAffix'),'Listener')]",
+    "sqlAOListenerName": "[concat('SQLAO', parameters('deploymentPrefix'),'Listener')]",
     "vmSettings": {
       "availabilitySets": {
-        "sqlAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'SQL001')]",
-        "dcwAvailabilitySetName": "[concat('AS', parameters('deploymentAffix'),'DCW001')]"
+        "sqlAvailabilitySetName": "[concat('AS', parameters('deploymentPrefix'),'SQL001')]",
+        "dcwAvailabilitySetName": "[concat('AS', parameters('deploymentPrefix'),'DCW001')]"
       },
       "noOfSqlVMs": 2,
       "vmContainerName": "vhds",
-      "sqlVMName": "[concat('S', parameters('deploymentAffix'),'SQL00')]",
-      "sqlwVMName": "[concat('S', parameters('deploymentAffix'),'WIT001')]",
-      "adPDCVMName": "[concat('S', parameters('deploymentAffix'),'DCW001')]",
-      "adBDCVMName": "[concat('S', parameters('deploymentAffix'),'DCW002')]",
+      "sqlVMName": "[concat('S', parameters('deploymentPrefix'),'SQL00')]",
+      "sqlwVMName": "[concat('S', parameters('deploymentPrefix'),'WIT001')]",
+      "adPDCVMName": "[concat('S', parameters('deploymentPrefix'),'DCW001')]",
+      "adBDCVMName": "[concat('S', parameters('deploymentPrefix'),'DCW002')]",
       "windowsImagePublisher": "MicrosoftWindowsServer",
       "windowsImageOffer": "WindowsServer",
       "windowsImageSKU": "2012-R2-Datacenter",
@@ -268,9 +268,9 @@
       "windowsDiskSize": 128,
       "sqlDiskSize": 1000
     },
-    "sqlAOEPName": "[concat('C', parameters('deploymentAffix'),'-hadr')]",
-    "sharePath": "[concat('C', parameters('deploymentAffix'),'-fsw')]",
-    "clusterName": "[concat('C', parameters('deploymentAffix'),'SQL001')]",
+    "sqlAOEPName": "[concat('C', parameters('deploymentPrefix'),'-hadr')]",
+    "sharePath": "[concat('C', parameters('deploymentPrefix'),'-fsw')]",
+    "clusterName": "[concat('C', parameters('deploymentPrefix'),'SQL001')]",
     "sqlwNicName": "[concat(variables('vmSettings').sqlwVMName,'-nic')]",
     "sql1NicName": "[concat(variables('vmSettings').sqlVMName,'1-nic')]",
     "sql2NicName": "[concat(variables('vmSettings').sqlVMName,'2-nic')]",
@@ -324,7 +324,7 @@
             "value": "2015-06-15"
           },
           "storageAccountNamePrefix": {
-            "value": "[variables('storageNamePrefix')]"
+            "value": "[variables('storageAccountNamePrefix')]"
           },
           "commonStorageAccountType": {
             "value": "[parameters('commonStorageAccountType')]"
@@ -399,8 +399,8 @@
           "apiVersion": {
             "value": "2015-06-15"
           },
-          "deploymentAffix": {
-            "value": "[parameters('deploymentAffix')]"
+          "deploymentPrefix": {
+            "value": "[parameters('deploymentPrefix')]"
           },
           "sqlLBIPAddress": {
             "value": "[parameters('sqlLBIPAddress')]"
@@ -467,7 +467,7 @@
             "value": "[resourceGroup().location]"
           },
           "storageAccountNamePrefix": {
-            "value": "[variables('storageNamePrefix')]"
+            "value": "[variables('storageAccountNamePrefix')]"
           },
           "vmContainerName": {
             "value": "[variables('vmSettings').vmContainerName]"
@@ -633,7 +633,7 @@
             "value": "[resourceGroup().location]"
           },
           "storageAccountNamePrefix": {
-            "value": "[variables('storageNamePrefix')]"
+            "value": "[variables('storageAccountNamePrefix')]"
           },
           "vmContainerName": {
             "value": "[variables('vmSettings').vmContainerName]"
@@ -833,7 +833,7 @@
             "value": "[resourceGroup().location]"
           },
           "storageAccountNamePrefix": {
-            "value": "[variables('storageNamePrefix')]"
+            "value": "[variables('storageAccountNamePrefix')]"
           },
           "vmContainerName": {
             "value": "[variables('vmSettings').vmContainerName]"

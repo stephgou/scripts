@@ -8,7 +8,7 @@
         "description": "Schema api version from parent template"
       }
     },
-    "deploymentAffix": {
+    "deploymentPrefix": {
       "type": "string"
     },
     "sqlLBIPAddress": {
@@ -23,10 +23,10 @@
   },
   "variables": {
     "lbSettings": {
-      "sqlLBFEName": "[concat('BFE', parameters('deploymentAffix'),'SQL001')]",
-      "sqlLBBEName": "[concat('BBE', parameters('deploymentAffix'),'SQL001')]",
-      "sqlLBName": "[concat('LB', parameters('deploymentAffix'),'SQL001')]",
-      "SQLAOLBProbeName": "[concat('SQLAO', parameters('deploymentAffix'),'LBProbe')]",
+      "sqlLBFEName": "[concat(parameters('deploymentPrefix'),'-SQL-LBFE')]",
+      "sqlLBBEName": "[concat(parameters('deploymentPrefix'),'-SQL-LBBE')]",
+      "sqlLBName": "[concat(parameters('deploymentPrefix'),'-SQL-LB')]",
+      "SQLAOLBProbeName": "[concat(parameters('deploymentPrefix'),'-LBProbe')]"
     },
     "ids": {
       "sqlLBID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbSettings').sqlLBName)]",
