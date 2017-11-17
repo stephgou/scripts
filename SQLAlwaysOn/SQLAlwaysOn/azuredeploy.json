@@ -417,7 +417,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
       "dependsOn": [
-        "Microsoft.Resources/deployments/VirtualNetwork"
+        "Microsoft.Resources/deployments/VirtualNetwork",
+        "Microsoft.Resources/deployments/PublicIPs"
       ],
       "properties": {
         "mode": "Incremental",

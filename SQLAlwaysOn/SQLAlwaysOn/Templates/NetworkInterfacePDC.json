@@ -23,7 +23,6 @@
     }
   },
   "variables": {
-    "rdpSuffix": "-rdp"
   },
   "resources": [
       {
@@ -42,7 +41,7 @@
                   "id": "[parameters('TRZSubnetRef')]"
                 },
                 "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('rdpIPAddressName'), '0', variables('rdpSuffix')))]"
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('rdpIPAddressName')))]"
                 }
               }
             }
