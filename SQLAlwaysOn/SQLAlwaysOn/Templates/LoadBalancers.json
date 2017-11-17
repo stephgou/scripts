@@ -33,7 +33,8 @@
     },
     "derivedIds": {
       "sqlLBFEConfigID": "[concat(variables('ids').sqlLBID,'/frontendIPConfigurations/',variables('lbSettings').sqlLBFEName)]",
-      "sqlLBProbeID": "[concat(variables('ids').sqlLBID,'/probes/',variables('lbSettings').SQLAOLBProbeName)]",
+      "sqlLBBEAddressPoolID": "[concat(variables('ids').sqlLBID,'/backendAddressPools/',variables('lbSettings').sqlLBBEName)]",
+      "sqlLBProbeID": "[concat(variables('ids').sqlLBID,'/probes/',variables('lbSettings').SQLAOLBProbeName)]"
     }
   },
   "resources": [
