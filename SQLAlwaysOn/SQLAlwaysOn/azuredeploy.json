@@ -408,6 +408,91 @@
           }
         }
       }
+    },
+    {
+      "name": "NetworkInterfacePDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/VirtualNetwork"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').NetworkInterfacePDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "adPDCNICIPAddress": {
+            "value": "[parameters('adPDCNICIPAddress')]"
+          },
+          "adPDCNicName": {
+            "value": "[variables('adPDCNicName')]"
+          },
+          "TRZSubnetRef": {
+            "value": "[variables('TRZSubnetRef')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "VirtualMachinePDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/AvailabilitySets",
+        "Microsoft.Resources/deployments/StorageAccounts",
+        "Microsoft.Resources/deployments/VirtualNetwork",
+        "Microsoft.Resources/deployments/NetworkInterfacePDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').VirtualMachineDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageNamePrefix')]"
+          },
+          "vmContainerName": {
+            "value": "[variables('vmSettings').vmContainerName]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "adAvailabilitySetRef": {
+            "value": "[reference('AvailabilitySets').outputs.adAvailabilitySetResourceId.value]"
+          },
+          "adDCVMName": {
+            "value": "[variables('vmSettings').adPDCVMName]"
+          },
+          "adVMSize": {
+            "value": "[parameters('adVMSize')]"
+          },
+          "adImagePublisher": {
+            "value": "[variables('vmSettings').windowsImagePublisher]"
+          },
+          "adImageOffer": {
+            "value": "[variables('vmSettings').windowsImageOffer]"
+          },
+          "adImageSKU": {
+            "value": "[variables('vmSettings').windowsImageSKU]"
+          }
+        }
+      }
     }
   ],
   "outputs": {
