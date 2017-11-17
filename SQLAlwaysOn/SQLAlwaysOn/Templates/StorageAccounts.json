@@ -22,7 +22,7 @@
     {
       "apiVersion": "[parameters('apiVersion')]",
       "location": "[resourceGroup().location]",
-      "name": "[concat(parameters('storageAccountNamePrefix'), 'sql')]",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'sqldiag')]",
       "type": "Microsoft.Storage/storageAccounts",
       "properties": {
         "accountType": "[parameters('sqlStorageAccountType')]"
@@ -32,7 +32,7 @@
       "apiVersion": "[parameters('apiVersion')]",
       "location": "[resourceGroup().location]",
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('storageAccountNamePrefix'), 'fsw')]",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'sqlwdiag')]",
       "properties": {
         "accountType": "Standard_LRS"
       }
@@ -41,7 +41,7 @@
       "apiVersion": "[parameters('apiVersion')]",
       "location": "[resourceGroup().location]",
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('storageAccountNamePrefix'), 'dcw')]",
+      "name": "[concat(parameters('storageAccountNamePrefix'), 'dcdiag')]",
       "properties": {
         "accountType": "[parameters('commonStorageAccountType')]"
       }

@@ -43,8 +43,7 @@
     }
   },
   "variables": {
-    "dcStorageName": "[concat(parameters('storageAccountNamePrefix'), 'dcw')]",
-    "diagStorageName": "[concat(parameters('storageAccountNamePrefix'), 'diag')]"
+    "diagStorageName": "[concat(parameters('storageAccountNamePrefix'), 'dcdiag')]"
   },
   "resources": [
     {
