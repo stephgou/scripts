@@ -371,7 +371,40 @@
             "value": "2015-06-15"
           },
           "rdpIPAddressName": {
-            "value": "[variables('rdpIPAddressName').PIPDCAddressName]"
+            "value": "[variables('rdpIPAddressName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "LoadBalancers",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/VirtualNetwork",
+        "Microsoft.Resources/deployments/PublicIPs"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').LoadBalancersTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "deploymentAffix": {
+            "value": "[parameters('deploymentAffix')]"
+          },
+          "sqlLBIPAddress": {
+            "value": "[parameters('sqlLBIPAddress')]"
+          },
+          "TRZSubnetRef": {
+            "value": "[variables('TRZSubnetRef')]"
+          },
+          "HTTPNAT": {
+            "value": "[variables('HTTPNAT')]"
           }
         }
       }

@@ -31,7 +31,7 @@
     }
   ],
   "outputs": {
-    "PIPrdpAddressResourceId": {
+    "rdpPIPAddressResourceId": {
       "type": "string",
       "value": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('rdpIPAddressName'))]"
     },

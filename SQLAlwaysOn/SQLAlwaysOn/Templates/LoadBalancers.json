@@ -19,9 +19,6 @@
     },
     "HTTPNAT": {
       "type": "string"
-    },
-    "PIPArrAddress": {
-      "type": "string"
     }
   },
   "variables": {
