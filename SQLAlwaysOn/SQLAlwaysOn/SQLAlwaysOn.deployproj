@@ -46,7 +46,7 @@
     <None Include="Templates\LoadBalancers.json" />
     <None Include="Templates\NetworkInterfaceBDC.json" />
     <None Include="Templates\NetworkInterfacePDC.json" />
-    <None Include="Templates\NetworkInterfaceVMs.json" />
+    <None Include="Templates\NetworkInterfaceSQL.json" />
     <None Include="Templates\PublicIPs.json" />
     <None Include="Templates\StorageAccounts.json" />
     <None Include="Templates\VirtualMachineDC.json" />

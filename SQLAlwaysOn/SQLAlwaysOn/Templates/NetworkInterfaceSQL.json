@@ -44,7 +44,7 @@
     "DMZSubnetRef": {
       "type": "string"
     },
-    "sqlBEAddressPoolID": {
+    "sqlLBBEAddressPoolID": {
       "type": "string"
     },
     "dnsServers": {
@@ -72,7 +72,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[parameters('sqlBEAddressPoolID')]"
+                  "id": "[parameters('sqlLBBEAddressPoolID')]"
                 }
               ]
             }
@@ -100,7 +100,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[parameters('sqlBEAddressPoolID')]"
+                  "id": "[parameters('sqlLBBEAddressPoolID')]"
                 }
               ]
             }

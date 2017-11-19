@@ -24,7 +24,7 @@ Write-Host "scriptFolder" $scriptFolder
 set-location $scriptFolder
 
 #endregion init
-#Login-AzureRmAccount -SubscriptionId $subscriptionId
+Login-AzureRmAccount -SubscriptionId $subscriptionId
 
 # Resource group create
 New-AzureRmResourceGroup `
@@ -38,10 +38,10 @@ New-AzureRmResourceGroupDeployment `
 	-ResourceGroupName $resourceGroupName `
 	-TemplateFile "$scriptFolder\$templateFile" `
 	-TemplateParameterFile "$scriptFolder\$templateParameterFile" `
-    -Debug -Verbose -DeploymentDebugLogLevel All
+    -Debug #-Verbose -DeploymentDebugLogLevel All
 
-Get-AzureRmResourceGroupDeploymentOperation -DeploymentName $resourceGroupDeploymentName -ResourceGroupName $resourceGroupName # mandatory ? -ApiVersion 
-Get-AzureRmLog -ResourceGroup $resourceGroupName -DetailedOutput
+#Get-AzureRmResourceGroupDeploymentOperation -DeploymentName $resourceGroupDeploymentName -ResourceGroupName $resourceGroupName # mandatory ? -ApiVersion 
+#Get-AzureRmLog -ResourceGroup $resourceGroupName -DetailedOutput
 
 $d = get-date
 Write-Host "Stopping Deployment $d"

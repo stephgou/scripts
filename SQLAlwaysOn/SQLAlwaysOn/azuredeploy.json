@@ -194,7 +194,7 @@
       "NetworkInterfaceBDCTemplateURL": "[concat(parameters('templatesBaseURL'),'/NetworkInterfaceBDC.json')]",
       "NetworkInterfaceVMsTemplateURL": "[concat(parameters('templatesBaseURL'),'/NetworkInterfaceVMs.json')]",
       "VirtualMachineDCTemplateURL": "[concat(parameters('templatesBaseURL'),'/VirtualMachineDC.json')]",
-      "VirtualMachineVMsTemplateURL": "[concat(parameters('templatesBaseURL'),'/VirtualMachineVMs.json')]",
+      "VirtualMachineVMsTemplateURL": "[concat(parameters('templatesBaseURL'),'/VirtualMachineSQL.json')]",
       "VNetDNSServerTemplateURL": "[concat(parameters('templatesBaseUrl'),'/VNetDNSServer.json')]",
       "JoinDomainVMsTemplateURL": "[concat(parameters('templatesBaseUrl'),'/JoinDomainVMs.json')]",
       "DSCConfigPDCTemplateURL": "[concat(parameters('templatesBaseUrl'),'/DSCConfigPDC.json')]",
@@ -569,6 +569,244 @@
             "value": [
               "[parameters('adPDCNICIPAddress')]"
             ]
+          }
+        }
+      }
+    },
+    {
+      "name": "NetworkInterfaceBDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/DSCConfigPDC",
+        "Microsoft.Resources/deployments/VNetDNSServerWithPDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').NetworkInterfaceBDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "adPDCNICIPAddress": {
+            "value": "[parameters('adPDCNICIPAddress')]"
+          },
+          "adBDCNICIPAddress": {
+            "value": "[parameters('adBDCNICIPAddress')]"
+          },
+          "adBDCNicName": {
+            "value": "[variables('adBDCNicName')]"
+          },
+          "TRZSubnetRef": {
+            "value": "[variables('TRZSubnetRef')]"
+          },
+          "dnsServers": {
+            "value": [
+              "[parameters('adPDCNICIPAddress')]"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "VirtualMachineBDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('nestedVirtualMachineApiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/AvailabilitySets",
+        "Microsoft.Resources/deployments/StorageAccounts",
+        "Microsoft.Resources/deployments/VirtualNetwork",
+        "Microsoft.Resources/deployments/NetworkInterfaceBDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').VirtualMachineDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "[variables('computeApiVersion')]"
+          },
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageAccountNamePrefix')]"
+          },
+          "vmContainerName": {
+            "value": "[variables('vmSettings').vmContainerName]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "adAvailabilitySetRef": {
+            "value": "[reference('AvailabilitySets').outputs.adAvailabilitySetResourceId.value]"
+          },
+          "adDCVMName": {
+            "value": "[variables('vmSettings').adBDCVMName]"
+          },
+          "adVMSize": {
+            "value": "[parameters('adVMSize')]"
+          },
+          "adImagePublisher": {
+            "value": "[variables('vmSettings').windowsImagePublisher]"
+          },
+          "adImageOffer": {
+            "value": "[variables('vmSettings').windowsImageOffer]"
+          },
+          "adImageSKU": {
+            "value": "[variables('vmSettings').windowsImageSKU]"
+          }
+        }
+      }
+    },
+    {
+      "name": "DSCConfigBDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/VirtualMachineBDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').DSCConfigBDCTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "adBDCVMName": {
+            "value": "[variables('vmSettings').adBDCVMName]"
+          },
+          "adminUserName": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adBDCConfigurationFunction": {
+            "value": "[variables('configuration').adBDCConfigurationFunction]"
+          },
+          "adBDCModulesURL": {
+            "value": "[variables('configuration').adBDCModulesURL]"
+          }
+        }
+      }
+    },
+    {
+      "name": "VNetDNSServerWithBDC",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/DSCConfigBDC"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').VNetDNSServerTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[parameters('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [
+              "[parameters('adPDCNICIPAddress')]",
+              "[parameters('adBDCNICIPAddress')]"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "NetworkInterfaceVMs",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/VirtualNetwork",
+        "Microsoft.Resources/deployments/VirtualMachinePDC",
+        "Microsoft.Resources/deployments/VirtualMachineBDC",
+        "Microsoft.Resources/deployments/VNetDNSServerWithPDC",
+        "Microsoft.Resources/deployments/VNetDNSServerWithBDC",
+        "Microsoft.Resources/deployments/PublicIPs",
+        "Microsoft.Resources/deployments/LoadBalancers"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').NetworkInterfaceVMsTemplateURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiVersion": {
+            "value": "2015-06-15"
+          },
+          "DMZSubnetRef": {
+            "value": "[variables('DMZSubnetRef')]"
+          },
+          "TRZSubnetRef": {
+            "value": "[variables('TRZSubnetRef')]"
+          },
+          "sql1NICIPAddress": {
+            "value": "[parameters('sql1NICIPAddress')]"
+          },
+          "sql2NICIPAddress": {
+            "value": "[parameters('sql2NICIPAddress')]"
+          },
+          "sqlwNICIPAddress": {
+            "value": "[parameters('sqlwNICIPAddress')]"
+          },
+          "adPDCNICIPAddress": {
+            "value": "[parameters('adPDCNICIPAddress')]"
+          },
+          "adBDCNICIPAddress": {
+            "value": "[parameters('adBDCNICIPAddress')]"
+          },
+          "sql1NicName": {
+            "value": "[variables('sql1NicName')]"
+          },
+          "sql2NicName": {
+            "value": "[variables('sql2NicName')]"
+          },
+          "sqlwNicName": {
+            "value": "[variables('sqlwNicName')]"
+          },
+          "adPDCNicName": {
+            "value": "[variables('adPDCNicName')]"
+          },
+          "adBDCNicName": {
+            "value": "[variables('adBDCNicName')]"
+          },
+          "dnsServers": {
+            "value": [
+              "[parameters('adPDCNICIPAddress')]",
+              "[parameters('adBDCNICIPAddress')]"
+            ]
+          },
+          "sqlLBBEAddressPoolID": {
+            "value": "[reference('LoadBalancers').outputs.sqlLBBEAddressPoolIDResourceId.value]"
           }
         }
       }
