@@ -104,21 +104,15 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',variables('sqlStorageName'),'.blob.core.windows.net/',parameters('vmContainerName'),'/',parameters('sqlVMName'), add(copyindex(),1), '-osdisk.vhd')]"
-            },
+            "name": "[concat(parameters('sqlVMName'), add(copyindex(),1),'-os-disk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',variables('sqlStorageName'),'.blob.core.windows.net/',parameters('vmContainerName'),'/', parameters('sqlVMName'), add(copyindex(),1), '-Data-1.vhd')]"
-              },
               "name": "[concat(parameters('sqlVMName'), add(copyindex(),1),'-data-disk1')]",
               "caching": "None",
-              "createOption": "empty",
+              "createOption": "Empty",
               "diskSizeGB": 1000,
               "lun": 0
             }
@@ -133,7 +127,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[concat('http://',variables('diagStorageName'),'.blob.core.windows.net')]"
           }
         }
@@ -164,21 +158,15 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',variables('fwStorageName'),'.blob.core.windows.net/',parameters('vmContainerName'),'/',parameters('sqlwVMName'),'-osdisk.vhd')]"
-            },
+            "name": "[concat(parameters('sqlwVMName'),'-os-disk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',variables('fwStorageName'),'.blob.core.windows.net/',parameters('vmContainerName'),'/', parameters('sqlwVMName'),'-data-1.vhd')]"
-              },
               "name": "[concat(parameters('sqlwVMName'),'-data-disk1')]",
               "caching": "None",
-              "createOption": "empty",
+              "createOption": "Empty",
               "diskSizeGB": 128,
               "lun": 0
             }
@@ -202,7 +190,7 @@
   ],
   "outputs": {
     "result": {
-      "value": "Virtual Machines Provisioning achieved",
+      "value": "SQL Virtual Machines Provisioning achieved",
       "type": "string"
     }
   }

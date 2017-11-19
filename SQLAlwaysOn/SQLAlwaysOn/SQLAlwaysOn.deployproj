@@ -50,7 +50,7 @@
     <None Include="Templates\PublicIPs.json" />
     <None Include="Templates\StorageAccounts.json" />
     <None Include="Templates\VirtualMachineDC.json" />
-    <None Include="Templates\VirtualMachineVMs.json" />
+    <None Include="Templates\VirtualMachineSQL.json" />
     <None Include="Templates\VirtualNetwork.json" />
     <None Include="Templates\VNetDNSServer.json" />
   </ItemGroup>

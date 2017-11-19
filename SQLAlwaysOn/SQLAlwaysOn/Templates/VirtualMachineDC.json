@@ -71,14 +71,14 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(parameters('adDCVMName'),'os-disk')]",
+            "name": "[concat(parameters('adDCVMName'),'-os-disk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
               "name": "[concat(parameters('adDCVMName'),'-data-disk1')]",
-              "createOption": "empty",
+              "createOption": "Empty",
               "caching": "None",
               "diskSizeGB": 128,
               "lun": 0
@@ -94,7 +94,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[concat('http://',variables('diagStorageName'),'.blob.core.windows.net')]"
           }
         }
