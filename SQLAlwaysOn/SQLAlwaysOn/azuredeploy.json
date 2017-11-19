@@ -324,11 +324,8 @@
           "storageAccountNamePrefix": {
             "value": "[variables('storageAccountNamePrefix')]"
           },
-          "commonStorageAccountType": {
+          "storageAccountType": {
             "value": "[parameters('commonStorageAccountType')]"
-          },
-          "sqlStorageAccountType": {
-            "value": "[parameters('sqlStorageAccountType')]"
           }
         }
       }
@@ -893,6 +890,12 @@
           },
           "sqlImageSKU": {
             "value": "[variables(parameters('sqlServerVersion'))]"
+          },
+          "sqlStorageSAccountType": {
+            "value": "[parameters('sqlStorageAccountType')]"
+          },
+          "sqlwStorageAccountType": {
+            "value": "[parameters('commonStorageAccountType')]"
           }
         }
       }

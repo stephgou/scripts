@@ -67,12 +67,16 @@
     },
     "sqlAvailabilitySetRef": {
       "type": "string"
+    },
+    "sqlStorageAccountType": {
+      "type": "string"
+    },
+    "sqlwStorageAccountType": {
+      "type": "string"
     }
   },
   "variables": {
-    "sqlStorageName": "[concat(parameters('storageAccountNamePrefix'), 'sql')]",
-    "fwStorageName": "[concat(parameters('storageAccountNamePrefix'), 'fsw')]",
-    "diagStorageName": "[concat(parameters('storageAccountNamePrefix'), 'diag')]"
+    "diagStorageName": "[concat(parameters('storageAccountNamePrefix'), 'sqldiag')]"
   },
   "resources": [
     {
@@ -106,13 +110,19 @@
           "osDisk": {
             "name": "[concat(parameters('sqlVMName'), add(copyindex(),1),'-os-disk')]",
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "[parameters('sqlStorageAccountType')]"
+            }
           },
           "dataDisks": [
             {
               "name": "[concat(parameters('sqlVMName'), add(copyindex(),1),'-data-disk1')]",
               "caching": "None",
               "createOption": "Empty",
+              "managedDisk": {
+                "storageAccountType": "[parameters('sqlStorageAccountType')]"
+              },
               "diskSizeGB": 1000,
               "lun": 0
             }
