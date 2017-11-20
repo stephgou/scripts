@@ -78,7 +78,7 @@
       "value": "2"
     },
     "sqlServerVersion": {
-      "value": "SQL2014SP1-WS2012R2"
+      "value": "SQL2014SP2-WS2012R2"
     },
     "numberOfSqlVMDisks": {
       "value": "1"

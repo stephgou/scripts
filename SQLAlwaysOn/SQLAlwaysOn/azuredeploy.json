@@ -276,8 +276,8 @@
     "HTTPNAT": "HTTP",
     "SQL2012SP2-WS2012R2": "Enterprise",
     "SQL2014-WS2012R2": "Enterprise",
-    "SQL2014SP1-WS2012R2": "Enterprise",
-    "SQL2016CTP3-WS2012R2": "Evaluation",
+    "SQL2014SP2-WS2012R2-ENT": "Enterprise",
+    "SQL2016-WS2012R2-ENT": "Enterprise",
     "storageApiVersion": "2015-06-15",
     "nestedVirtualMachineApiVersion": "2016-09-01",
     "networkApiVersion": "2017-03-01",
@@ -891,7 +891,7 @@
           "sqlImageSKU": {
             "value": "[variables(parameters('sqlServerVersion'))]"
           },
-          "sqlStorageSAccountType": {
+          "sqlStorageAccountType": {
             "value": "[parameters('sqlStorageAccountType')]"
           },
           "sqlwStorageAccountType": {
