@@ -11,3 +11,6 @@ In order to execute it, you will need to install "AzureRM.Compute" module (it is
 Install-Module AzureRM.Compute -RequiredVersion 2.9.0 -AllowClobbe
 ```
 
+### GandiDNSZoneUpdate ###
+
+A script that enables to update your Gandi DNS Zone with A or CNAME records (in PowerShell using a C# dynamic assembly code and xmlrpcnet : CookComputing.XmlRpcV2.dll tested with version 3.0.0.266 from https://www.nuget.org/packages/xmlrpcnet/)
