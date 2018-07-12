@@ -19,3 +19,5 @@ A script that enables to update your Gandi DNS Zone with A or CNAME records (in 
 ### ASE-ApplicationGateway ###
 A script that enables to deploy an ASE with different App Services exposed through an Application Gateway
 
+<img alt="Architecture ASE + AppGateway" src="https://github.com/stephgou/scripts/raw/master/ASE-ApplicationGateway/Archi-ASE-AppGateway.png" width="821" />
+
