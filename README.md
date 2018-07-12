@@ -14,3 +14,8 @@ Install-Module AzureRM.Compute -RequiredVersion 2.9.0 -AllowClobbe
 ### GandiDNSZoneUpdate ###
 
 A script that enables to update your Gandi DNS Zone with A or CNAME records (in PowerShell using a C# dynamic assembly code and xmlrpcnet : CookComputing.XmlRpcV2.dll tested with version 3.0.0.266 from https://www.nuget.org/packages/xmlrpcnet/)
+
+
+### ASE-ApplicationGateway ###
+A script that enables to deploy an ASE with different App Services exposed through an Application Gateway
+

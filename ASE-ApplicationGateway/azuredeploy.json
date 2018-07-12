@@ -1,0 +1,649 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Prefix for name generation"
+      }
+    },
+    "aseLocation": {
+      "type": "string",
+      "defaultValue": "North Europe",
+      "metadata": {
+        "description": "Location of the App Service Environment"
+      }
+    },
+    "pricingTier": {
+      "type": "string",
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1",
+      "metadata": {
+        "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Defines the number of instances that will be allocated to the app service plan."
+      }
+    },
+    "internalLoadBalancingMode": {
+      "type": "int",
+      "defaultValue": 3,
+      "allowedValues": [ 0, 1, 2, 3 ],
+      "metadata": {
+        "description": "0 = public VIP only, 1 = only ports 80/443 are mapped to ILB VIP, 2 = only FTP ports are mapped to ILB VIP, 3 = both ports 80/443 and FTP ports are mapped to an ILB VIP."
+      }
+    },
+
+    "applicationGatewaySize": {
+      "type": "string",
+      "allowedValues": [
+        "WAF_Medium",
+        "WAF_Large"
+      ],
+      "defaultValue": "WAF_Medium",
+      "metadata": {
+        "description": "application gateway size"
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "allowedValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Number of instances"
+      }
+    },
+    "wafEnabled": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "WAF Enabled"
+      }
+    },
+    "wafMode": {
+      "type": "string",
+      "allowedValues": [
+        "Detection",
+        "Prevention"
+      ],
+      "defaultValue": "Detection",
+      "metadata": {
+        "description": "WAF Mode"
+      }
+    },
+    "wafRuleSetType": {
+      "type": "string",
+      "allowedValues": [
+        "OWASP"
+      ],
+      "defaultValue": "OWASP",
+      "metadata": {
+        "description": "WAF Rule Set Type"
+      }
+    },
+    "wafRuleSetVersion": {
+      "type": "string",
+      "allowedValues": [
+        "2.2.9",
+        "3.0"
+      ],
+      "defaultValue": "3.0",
+      "metadata": {
+        "description": "WAF Rule Set Version"
+      }
+    },
+    "functionStorageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS"
+      ],
+      "metadata": {
+        "description": "Function Storage Account type"
+      }
+    }
+  },
+  "variables": {
+    "functionStorageAccountName": "[concat(toLower(parameters('prefix')),'functions')]",
+    "aseName": "[concat(parameters('prefix'),'-ASE-internal')]",
+    "webAppWindowsName": "[concat(parameters('prefix'),'-Front-Windows')]",
+    "webAppLinuxName": "[concat(parameters('prefix'),'-Front-Linux')]",
+    "webApiName": "[concat(parameters('prefix'),'-Back-Api')]",
+    "functionName": "[concat(parameters('prefix'),'-Function')]",
+    "customWindowsHostname": "[concat(parameters('prefix'),'-windows.ase.local')]",
+    "customLinuxHostname": "[concat(parameters('prefix'),'-linux.ase.local')]",
+    "customApiHostname": "[concat(parameters('prefix'),'-api.ase.local')]",
+    "hostname-Windows": "stephgou-Windows.goudeau.top",
+    "hostname-Linux": "stephgou-Linux.goudeau.top",
+    "hostname-Api": "stephgou-Api.goudeau.top",
+    "virtualNetworkName": "[concat(variables('aseName'),'-VNET')]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "appServiceWindowsPlanName": "[concat(variables('aseName'),'-Windows-APPSVCPLAN')]",
+    "appServicePlanLinuxName": "[concat(variables('aseName'),'-Linux-APPSVCPLAN')]",
+    "appServiceApiPlanName": "[concat(variables('aseName'),'-Api-APPSVCPLAN')]",
+    "aseSubnetName": "[concat(parameters('prefix'),'-ASE')]",
+    "applicationGatewaySubnetName": "[concat(parameters('prefix'),'-AppGWSubnet')]",
+    "applicationGatewaysubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), variables('applicationGatewaySubnetName'))]",
+    "SQLDatabaseSubnetName": "[concat(parameters('prefix'),'-SQLDatabase')]",
+    "applicationGatewayName": "[concat(parameters('prefix'),'-AppGW')]",
+    "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName'))]",
+    "dnsGatewayDomainName": "[concat(toLower(parameters('prefix')),'appgateway')]",
+    "publicIPAddressName": "[concat(parameters('prefix'),'-publicIP')]",
+    "publicIPID": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
+    "backendAddressPoolWindows": "[concat(parameters('prefix'),'-backendAddressPoolWindows')]",
+    "backendAddressPoolLinux": "[concat(parameters('prefix'),'-backendAddressPoolLinux')]",
+    "backendAddressPoolApi": "[concat(parameters('prefix'),'-backendAddressPoolApi')]",
+    "backendAddressPoolWindowsID": "[concat(variables('applicationGatewayID'), '/backendAddressPools/', variables('backendAddressPoolWindows'))]",
+    "backendAddressPoolLinuxID": "[concat(variables('applicationGatewayID'), '/backendAddressPools/', variables('backendAddressPoolLinux'))]",
+    "backendAddressPoolApiID": "[concat(variables('applicationGatewayID'), '/backendAddressPools/', variables('backendAddressPoolApi'))]",
+    "httpListenerWindows": "[concat(parameters('prefix'),'-httpListenersWindows')]",
+    "httpListenerLinux": "[concat(parameters('prefix'),'-httpListenerLinux')]",
+    "httpListenerApi": "[concat(parameters('prefix'),'-httpListenerApi')]",
+    "applicationGatewayCustProbe": "[concat(variables('applicationGatewayName'), '-CustProbe')]",
+    "httpListenerWindowsID": "[concat(variables('applicationGatewayID'), '/httpListeners/', variables('httpListenerWindows'))]",
+    "httpListenerLinuxID": "[concat(variables('applicationGatewayID'), '/httpListeners/', variables('httpListenerLinux'))]",
+    "httpListenerApiID": "[concat(variables('applicationGatewayID'), '/httpListeners/', variables('httpListenerApi'))]",
+    "appGatewayBackendHttpSettings": "[concat(variables('applicationGatewayName'),'BackendHttpSettings')]",
+    "appGatewayBackendHttpSettingsID": "[concat(resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName')),'/backendHttpSettingsCollection/',variables('appGatewayBackendHttpSettings'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('functionStorageAccountName')]",
+      "apiVersion": "2016-12-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "sku": {
+        "name": "[parameters('functionStorageAccountType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "comments": "Virtual network for overall solution",
+      "tags": {
+        "displayName": "Virtual Network"
+      },
+      "dependsOn": [],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('applicationGatewaySubnetName')]",
+            "properties": {
+              "addressPrefix": "10.0.1.0/25"
+            }
+          },
+          {
+            "name": "[variables('aseSubnetName')]",
+            "properties": {
+              "addressPrefix": "10.0.2.0/25"
+            }
+          },
+          {
+            "name": "[variables('SQLDatabaseSubnetName')]",
+            "properties": {
+              "addressPrefix": "10.0.3.0/25"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('aseName')]",
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/hostingEnvironments",
+      "kind": "ASEV2",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('aseName')]",
+        "location": "[parameters('aseLocation')]",
+        "ipSslAddressCount": 0,
+        "internalLoadBalancingMode": "[parameters('internalLoadBalancingMode')]",
+        "virtualNetwork": {
+          "Id": "[variables('vnetID')]",
+          "Subnet": "[variables('aseSubnetName')]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('appServiceWindowsPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('appServiceWindowsPlanName')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('pricingTier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('pricingTier'))]",
+        "family": "I",
+        "capacity": "[parameters('capacity')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/hostingEnvironments/',variables('aseName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('webAppWindowsName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('webAppWindowsName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServiceWindowsPlanName'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',variables('appServiceWindowsPlanName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "name": "[concat(variables('webAppWindowsName'), '/', variables('customWindowsHostname'))]",
+      "apiVersion": "2016-03-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/sites/',variables('webAppWindowsName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-04-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "properties": {
+        "name": "[variables('functionName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServiceWindowsPlanName'))]",
+        "hostingEnvironment": "",
+        "clientAffinityEnabled": false,
+        "siteConfig": {
+          "alwaysOn": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServiceWindowsPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('functionStorageAccountName'))]"
+      ],
+      "resources": [
+        {
+          "apiVersion": "2016-03-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('functionStorageAccountName'))]"
+          ],
+          "properties": {
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionstorageAccountName')), '2015-05-01-preview').key1,';')]",
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionstorageAccountName')), '2015-05-01-preview').key1,';')]",
+            "FUNCTIONS_EXTENSION_VERSION": "~1"
+          }
+        }
+      ]
+    },
+
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('appServicePlanLinuxName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('appServicePlanLinuxName')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('pricingTier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('pricingTier'))]",
+        "family": "I",
+        "capacity": "[parameters('capacity')]"
+      },
+      "kind": "linux",
+      "dependsOn": [
+        "[concat('Microsoft.Web/hostingEnvironments/',variables('aseName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2016-03-01",
+      "name": "[variables('webAppLinuxName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('webAppLinuxName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanLinuxName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "node|6.10"
+        },
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',variables('appServicePlanLinuxName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "name": "[concat(variables('webAppLinuxName'), '/', variables('customLinuxHostname'))]",
+      "apiVersion": "2016-03-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/sites/',variables('webAppLinuxName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('appServiceApiPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('appServiceApiPlanName')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('pricingTier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('pricingTier'))]",
+        "family": "I",
+        "capacity": "[parameters('capacity')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/hostingEnvironments/',variables('aseName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('webApiName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('aseLocation')]",
+      "properties": {
+        "name": "[variables('webApiName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServiceApiPlanName'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName'))]"
+        }
+      },
+      "kind": "api",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',variables('appServiceApiPlanName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "name": "[concat(variables('webApiName'), '/', variables('customApiHostname'))]",
+      "apiVersion": "2016-03-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/sites/',variables('webApiName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2017-03-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "publicIPAddressVersion": "IPv4",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "[variables('dnsGatewayDomainName')]",
+          "fqdn": "[variables('dnsGatewayDomainName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-06-01",
+      "name": "[variables('applicationGatewayName')]",
+      "type": "Microsoft.Network/applicationGateways",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "sku": {
+          "name": "[parameters('applicationGatewaySize')]",
+          "tier": "WAF",
+          "capacity": "[parameters('capacity')]"
+        },
+        "gatewayIPConfigurations": [
+          {
+            "name": "appGatewayIpConfig",
+            "properties": {
+              "subnet": {
+                "id": "[variables('applicationGatewaysubnetID')]"
+              }
+            }
+          }
+        ],
+        "frontendIPConfigurations": [
+          {
+            "name": "appGatewayFrontendIP",
+            "properties": {
+              "PublicIPAddress": {
+                "id": "[variables('publicIPID')]"
+              }
+            }
+          }
+        ],
+        "frontendPorts": [
+          {
+            "name": "appGatewayFrontendPort",
+            "properties": {
+              "Port": 80
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('backendAddressPoolWindows')]",
+            "properties": {
+              "BackendAddresses": [
+                {
+                  "IpAddress": "[variables('customWindowsHostname')]"
+                }
+              ]
+            }
+          },
+          {
+            "name": "[variables('backendAddressPoolLinux')]",
+            "properties": {
+              "BackendAddresses": [
+                {
+                  "IpAddress": "[variables('customLinuxHostname')]"
+                }
+              ]
+            }
+          },
+          {
+            "name": "[variables('backendAddressPoolApi')]",
+            "properties": {
+              "BackendAddresses": [
+                {
+                  "IpAddress": "[variables('customApiHostname')]"
+                }
+              ]
+            }
+          }
+        ],
+        "probes": [
+          {
+            "name": "[variables('applicationGatewayCustProbe')]",
+            "properties": {
+              "protocol": "Http",
+              "path": "/",
+              "interval": 30,
+              "timeout": 60,
+              "unhealthyThreshold": 3,
+              "pickHostNameFromBackendHttpSettings": true,
+              "minServers": 0,
+              "match": {
+                "statusCodes": [
+                  "200-399"
+                ]
+              }
+            }
+          }
+        ],
+        "backendHttpSettingsCollection": [
+          {
+            "name": "[variables('appGatewayBackendHttpSettings')]",
+            "properties": {
+              "Port": 80,
+              "Protocol": "Http",
+              "CookieBasedAffinity": "Disabled",
+              "pickHostNameFromBackendAddress": true,
+              "probe": {
+                "id": "[concat(variables('applicationGatewayID'), '/probes/', variables('applicationGatewayCustProbe'))]"
+              }
+            }
+          }
+        ],
+        "httpListeners": [
+          {
+            "name": "[variables('httpListenerWindows')]",
+            "properties": {
+              "FrontendIPConfiguration": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+              },
+              "FrontendPort": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+              },
+              "Protocol": "Http",
+              "HostName": "[variables('hostname-Windows')]"
+            }
+          },
+          {
+            "name": "[variables('httpListenerLinux')]",
+            "properties": {
+              "FrontendIPConfiguration": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+              },
+              "FrontendPort": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+              },
+              "Protocol": "Http",
+              "HostName": "[variables('hostname-Linux')]"
+            }
+          },
+          {
+            "name": "[variables('httpListenerApi')]",
+            "properties": {
+              "FrontendIPConfiguration": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+              },
+              "FrontendPort": {
+                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+              },
+              "Protocol": "Http",
+              "HostName": "[variables('hostname-Api')]"
+            }
+          }
+        ],
+        "requestRoutingRules": [
+          {
+            "Name": "ruleWindows",
+            "properties": {
+              "RuleType": "Basic",
+              "httpListener": {
+                "id": "[variables('httpListenerWindowsID')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('backendAddressPoolWindowsID')]"
+              },
+              "backendHttpSettings": {
+                "id": "[variables('appGatewayBackendHttpSettingsID')]"
+              }
+            }
+          },
+          {
+            "Name": "ruleLinux",
+            "properties": {
+              "RuleType": "Basic",
+              "httpListener": {
+                "id": "[variables('httpListenerLinuxID')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('backendAddressPoolLinuxID')]"
+              },
+              "backendHttpSettings": {
+                "id": "[variables('appGatewayBackendHttpSettingsID')]"
+              }
+            }
+          },
+          {
+            "Name": "ruleApi",
+            "properties": {
+              "RuleType": "Basic",
+              "httpListener": {
+                "id": "[variables('httpListenerApiID')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('backendAddressPoolApiID')]"
+              },
+              "backendHttpSettings": {
+                "id": "[variables('appGatewayBackendHttpSettingsID')]"
+              }
+            }
+          }
+        ],
+        "webApplicationFirewallConfiguration": {
+          "enabled": "[parameters('wafEnabled')]",
+          "firewallMode": "[parameters('wafMode')]",
+          "ruleSetType": "[parameters('wafRuleSetType')]",
+          "ruleSetVersion": "[parameters('wafRuleSetVersion')]",
+          "disabledRuleGroups": []
+        }
+      }
+    }
+  ]
+}
